@@ -1,0 +1,31 @@
+//recursive
+
+bool solve(int i, int target,vector<int>& nums,vector<vector<int>>& dp) {
+        if(target==0)
+            return true;
+        if(i<0)
+            return false;
+        if(dp[i][target]!=-1)
+            return dp[i][target];
+        bool left=solve(i-1,target,nums,dp);
+        bool right=false;
+        if(nums[i]<=target)
+            right=solve(i-1,target-nums[i],nums,dp);
+        return dp[i][target]=left | right;
+    }
+    
+    //bottom-up
+    
+            vector<int> prev(sum+1,0), curr(sum+1,0);
+            prev[0]=1;
+            curr[0]=1;
+            for(int i=1;i<=nums.size();i++) {
+                for(int target=1;target<=sum/2;target++) {
+                    bool left=prev[target];
+                    bool right=false;
+                    if(nums[i-1]<=target)
+                        right=prev[target-nums[i-1]];
+                    curr[target]=left | right;
+                }
+                prev.assign(curr.begin(),curr.end());
+            }

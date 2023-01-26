@@ -1,0 +1,71 @@
+memoized
+
+int solve(int i,int w,vector<int> weight,vector<int> value,vector<vector<int>>& dp) {
+	if(i==0) {
+		if(weight[i]<=w) 
+			return value[i];
+		else
+			return 0;
+	}
+	if(w==0)
+		return 0;
+	if(dp[i][w]!=-1)
+		return dp[i][w];
+	int left=0,right=0;
+	right=0+solve(i-1,w,weight,value,dp);
+	if(weight[i]<=w)
+		left=value[i]+solve(i-1,w-weight[i],weight,value,dp);
+	return dp[i][w]=max(left,right);
+}
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) {
+	vector<vector<int>> dp (n,vector<int> (maxWeight+1,-1));
+	return solve(n-1,maxWeight,weight,value,dp);
+}
+
+
+
+
+
+//bottom-up
+
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) {
+	vector<int> prev (maxWeight+1,0),curr (maxWeight+1,0);
+	if(weight[0]<=maxWeight)
+		for(int i=weight[0];i<=maxWeight;i++)
+			prev[i]=value[0];
+	for(int i=1;i<n;i++) {
+		for(int j=1;j<=maxWeight;j++) {
+			int left=0,right=0;
+			right=0+prev[j];
+			if(weight[i]<=j)
+				left=value[i]+prev[j-weight[i]];
+			curr[j]=max(left,right);
+		}
+		prev.assign(curr.begin(),curr.end());
+	}
+	return prev[maxWeight];
+}
+
+
+
+
+
+
+//bottom_up_one array_optimized
+
+
+int knapsack(vector<int> weight, vector<int> value, int n, int maxWeight) {
+	vector<int> prev (maxWeight+1,0);
+	if(weight[0]<=maxWeight)
+		for(int i=weight[0];i<=maxWeight;i++)
+			prev[i]=value[0];
+	for(int i=1;i<n;i++) {
+		for(int j=maxWeight;j>=1;j--) {
+			int left=0,right=0;
+			right=0+prev[j];
+			if(weight[i]<=j)
+				left=value[i]+prev[j-weight[i]];
+			prev[j]=max(left,right);
+		}
+	}
+	return prev[maxWeight];

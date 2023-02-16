@@ -1,0 +1,20 @@
+//Binary Search Method.Only applicable to find length of longest increasing subsequence.
+
+
+
+int lengthOfLIS(vector<int>& nums) {
+        vector<int> vect;
+        vect.push_back(nums[0]);
+        int s=1;
+        for(int i=1;i<nums.size();i++) {
+            if(lower_bound(vect.begin(),vect.end(),nums[i])==vect.end())
+                vect.push_back(nums[i]);
+            else {
+                auto it=lower_bound(vect.begin(),vect.end(),nums[i])-vect.begin();
+                vect[it]=nums[i];
+            }
+            if(vect.size()>s)
+                s=vect.size();
+        }
+        return s;
+    }

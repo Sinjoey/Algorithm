@@ -1,0 +1,63 @@
+// dfs method
+
+
+void dfs(int node,vector<int> adj[],vector<int>& vis,stack<int>& st) {
+	    vis[node]=1;
+	    for(auto it:adj[node]) {
+	        if(!vis[it])
+	            dfs(it,adj,vis,st);
+	    }
+	    st.push(node);
+	}
+	vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    stack<int> st;
+	    vector<int> vis (V,0);
+	    for(int i=0;i<V;i++) {
+	        if(vis[i]==0)
+	            dfs(i,adj,vis,st);
+	    }
+	    vector<int> vect;
+	    while(!st.empty()) {
+	        vect.push_back(st.top());
+	        st.pop();
+	    }
+	    return vect;
+	}
+  
+  
+  
+  
+  
+  //bfs method
+  
+  
+  vector<int> topoSort(int V, vector<int> adj[]) 
+	{
+	    map<int,int> mp;
+	    queue<int> q;
+	    vector<int> vect;
+	    for(int i=0;i<V;i++) {
+	        for(auto it:adj[i]) {
+	            mp[it]++;
+	        }
+	    }
+	    for(int i=0;i<V;i++) {
+	        if(mp[i]==0)
+	            q.push(i);
+	    }
+	    while(!q.empty()) {
+	        int node=q.front();
+	        q.pop();
+	        vect.push_back(node);
+	        for(auto it:adj[node]) {
+	            if(mp[it]==1) {
+	                mp[it]--;
+	                q.push(it);
+	            }
+	            else if(mp[it]>1)
+	                mp[it]--;
+	        }
+	    }
+	    return vect;
+	}

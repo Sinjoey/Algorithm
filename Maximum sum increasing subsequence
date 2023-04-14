@@ -1,0 +1,28 @@
+here we will use 2 parameter for dp state, i here will tell current index and j here will tell the previous index we took.
+Choosing of i depends on j thats why 2 parameter.
+
+
+
+//memoization  
+
+
+
+	int solve(int i,int arr[],vector<vector<int>>& dp,int j, int n) {
+	    if(i==n)
+	        return 0;
+	    if(dp[i][j+1]!=-1)
+	        return dp[i][j+1];
+	    int take=0,notTake=0;
+	    if(j==-1 || arr[i]>arr[j]) {
+	        take=arr[i]+solve(i+1,arr,dp,i,n);
+	    }
+	    notTake=0+solve(i+1,arr,dp,j,n);
+	    return dp[i][j+1]=max(take,notTake);
+	}
+	int maxSumIS(int arr[], int n)  
+	{  
+	    // Your code goes here
+	    vector<vector<int>> dp (n+1,vector<int> (n+1,-1));
+	    return solve(0,arr,dp,-1,n);
+	    
+	}  

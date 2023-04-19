@@ -1,0 +1,35 @@
+// One thing to notice here for optimal/a good approach is that if by chance our top element is the target cell then we will 
+//return the effort used till that path. We will not go for further evaluation because if our target cell is at the top of priority 
+//queue then it is confirmed that the rest path will be costing more effort that the present target cell's effort.
+
+
+
+int minimumEffortPath(vector<vector<int>>& heights) {
+        int m=heights.size();
+        int n=heights[0].size();
+        vector<vector<int>> check (m,vector<int>(n,1e9));
+        priority_queue<pair<int,pair<int, int>>, vector<pair<int,pair<int, int>>>, greater<pair<int,pair<int, int>>>> pq;
+        pq.push({0,{0,0}});
+        check[0][0]=0;
+        vector<int> rows {0,-1,0,1},cols {-1,0,1,0};
+        while(!pq.empty()) {
+            int dis=pq.top().first;
+            int x=pq.top().second.first;
+            int y=pq.top().second.second;
+            pq.pop();
+            if(x==m-1 && y==n-1)
+                return dis;
+            for(int i=0;i<rows.size();i++) {
+                int row=x+rows[i];
+                int col=y+cols[i];
+                if(row>=0 && row<m && col>=0 && col<n) {
+                    int diff=max(dis,abs(heights[x][y]-heights[row][col]));
+                    if(diff<check[row][col]) {
+                        check[row][col]=diff;
+                        pq.push({diff,{row,col}});
+                    }
+                }
+            }
+        }
+        return -1;
+    }

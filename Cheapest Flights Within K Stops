@@ -1,0 +1,37 @@
+//common mistake of taking check[it.first] = check[node] + it.second. It will give wrong answer since check[anything] stores
+// the minimum cost of flight from source to that node irrespective of stops (stops can be anything just <= k). So use
+// queue price to calculate.
+
+
+
+
+int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<pair<int,int>> adj[n];
+        vector<int> check (n,1e9);
+        check[src]=0;
+        for(int i=0;i<flights.size();i++) {
+            int a=flights[i][0];
+            int b=flights[i][1];
+            int c=flights[i][2];
+            adj[a].push_back({b,c});
+        }
+        queue<pair<int,pair<int,int>>> q;
+        q.push({0,{src,0}});
+        while(!q.empty()) {
+            int stop=q.front().first;
+            int price=q.front().second.second;
+            int node=q.front().second.first;
+            q.pop();
+            if(stop>k)
+                continue;
+            for(auto it:adj[node]) {
+                if(stop<=k && price+it.second<check[it.first]) {
+                    check[it.first]=price+it.second;
+                    q.push({stop+1,{it.first,price+it.second}});
+                }
+            }
+        }
+        if(check[dst]!=1e9)
+            return check[dst];
+        return -1;
+    }

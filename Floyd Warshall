@@ -1,0 +1,36 @@
+// shortest distance between each and every node
+
+
+
+void shortest_distance(vector<vector<int>>&matrix){
+	    // Code here
+	    for(int i=0;i<matrix.size();i++) {
+	        for(int j=0;j<matrix[0].size();j++) {
+	            if(matrix[i][j]==-1)
+	                matrix[i][j]=1e9;
+	            if(i==j)
+	                matrix[i][j]=0;
+	        }
+	    }
+	    for(int i=0;i<matrix.size();i++) {
+	        for(int j=0;j<matrix.size();j++) {
+	            for(int k=0;k<matrix[0].size();k++) {
+	               matrix[j][k]=min(matrix[j][k],matrix[j][i]+matrix[i][k]);
+	            }
+	        }
+	    }
+	    
+	    for(int i=0;i<matrix.size();i++) {
+	        for(int j=0;j<matrix[0].size();j++) {
+	            if(matrix[i][j]==1e9)
+	                matrix[i][j]=-1;
+	        }
+	    }
+	    
+	    
+	   // //for detecting negative cycle
+	   // for(int i=0;i<matrix.size();i++) {
+	   //     if(matrix[i][i]<0)
+	   //         return -1
+	   // }
+	}

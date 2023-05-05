@@ -1,0 +1,40 @@
+// t[]== time of insertion
+// low[]=min of all adjacent node i can reach accept parent
+
+
+
+class Solution {
+public:
+    int c=1;
+    void dfs(int node,vector<int> adj[],vector<vector<int>>& vect,vector<int>& vis,vector<int>& low,vector<int>& t,int parent) {
+        vis[node]=1;
+        t[node]=c;
+        low[node]=c;
+        c++;
+        for(auto it:adj[node]) {
+            if(!vis[it]) {
+                dfs(it,adj,vect,vis,low,t,node);
+                low[node]=min(low[node],low[it]);
+                if(low[it]>t[node]) {
+                    vect.push_back({node,it});
+                } 
+            }
+            else if(vis[it] && it!=parent) {
+                low[node]=min(low[node],low[it]);
+            }
+        }
+    }
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        vector<vector<int>> vect;
+        vector<int> low (n,0),t (n,0),vis (n,0);
+        vector<int> adj[n];
+        for(int i=0;i<connections.size();i++) {
+            int a=connections[i][0];
+            int b=connections[i][1];
+            adj[a].push_back(b);
+            adj[b].push_back(a);
+        }
+        dfs(0,adj,vect,vis,low,t,-1);
+        return vect;
+    }
+};

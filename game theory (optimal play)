@@ -1,0 +1,27 @@
+// game theory problem hai.......2 player khelega game aur uske baad winner decide hoga jiska score jyada rahega uske basis pe (optimal play karega dono)
+// iske liye tarika dp se nikelga 
+// alice - bob wala funda lagao return hoga alice - bob ya phir bob - alice 
+eg code
+
+
+int solve(int lb,int ub,vector<int>& nums,vector<vector<int>>& dp)  {
+        if(lb>ub)
+            return 0;
+        if(dp[lb][ub]!=-1)
+            return dp[lb][ub];
+        int score=0;
+        score=max(nums[lb]-solve(lb+1,ub,nums,dp),nums[ub]-solve(lb,ub-1,nums,dp));
+        return dp[lb][ub]=score;
+    }
+    bool PredictTheWinner(vector<int>& nums) {
+        vector<vector<int>> dp (nums.size(),vector<int>(nums.size(),-1));
+        int ans=solve(0,nums.size()-1,nums,dp);
+        if(ans>=0)
+            return true;
+        return false;
+    }
+
+
+
+
+//stone game 3 bhi ek acha example hoga
